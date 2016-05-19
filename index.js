@@ -1,7 +1,8 @@
 'use strict';
-const  BbPromise = require('bluebird');
-  
+
 module.exports = function(S) { 
+  const  BbPromise = require('bluebird'),
+         SError    = require(S.getServerlessPath('Error'));
 
   class commandLineEventArgs extends S.classes.Plugin {
     constructor() {
@@ -23,13 +24,16 @@ module.exports = function(S) {
 
     _hookPre(evt) {
       return new BbPromise(function (resolve, reject) {
-        if (evt.options.event !== null) {
-          evt.data.event = JSON.parse(evt.options.event);
-        }
-        return resolve(evt);
+        try {
+          if (evt.options.event !== null) {
+            evt.data.event = JSON.parse(evt.options.event);
+          }
+          return resolve(evt);
+        } catch(e) {
+          reject(new SError("Invalid event JSON"));
+        } 
       });
     }
   }
   return commandLineEventArgs;
-
 };
