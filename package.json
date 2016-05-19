@@ -1,15 +1,15 @@
 {
-  "name": "commandLineEventArgs",
+  "name": "serverless-command-line-event-args",
   "version": "0.1.0",
   "engines": {
     "node": ">=4.0"
   },
-  "description": "Serverless plugin",
-  "author": "serverless.com",
+  "description": "The module is Serverless plugin. You can execute `serverless function run -e '{\"aaa\":\"bbb\"}'`",
+  "author": "https://github.com/horike37",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "http://github.com/"
+    "url": "https://github.com/horike37/serverless-command-line-event-args"
   },
   "keywords": [
     "serverless framework plugin",
