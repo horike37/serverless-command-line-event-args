@@ -29,8 +29,8 @@ describe('ServerlessCmdEvent', function() {
           region: 'ap-northeast-1'
         }
       }));
-      s.getProject().setFunction({name:'function1'});
-     // instance = s.getProject().getFunction();
+     // s.getProject().setFunction({name:'function1'});
+      //instance = s.getProject().getFunction('function1');
       done();
     });
   });
@@ -49,8 +49,26 @@ describe('ServerlessCmdEvent', function() {
   });
   
   describe('#_hookPre()', function() {
-    it('should register hooks', function() {
-      //
+    it('should set event JSON in event.data', function(done) {
+      let args = { 
+                   options: { 
+                     region: null,
+                     stage: null,
+                     runDeployed: null,
+                     invocationType: null,
+                     log: null,
+                     event: '{"aaa":"ccc"}',
+                     name: undefined
+                   },
+                   data: {} 
+                 };
+                
+      plugin._hookPre(args).then(function(evt) {
+        console.log(evt.data); 
+        evt.data.should.have.property('event');
+        evt.data.event.should.have.property('aaa', 'ccc');
+        done();
+      });
     });
   });
 });
