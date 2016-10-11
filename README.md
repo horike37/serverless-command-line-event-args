@@ -20,7 +20,7 @@ Execute npm install in your Serverless project.
 
     $ npm install serverless-command-line-event-args
     
-Add the plugin to your serverless.yml file
+Add the plugin to your `serverless.yml` file
 
 ```yml
 plugins:
