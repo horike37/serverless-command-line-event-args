@@ -1,39 +1,49 @@
 'use strict';
+const  BbPromise = require('bluebird');
 
-module.exports = function(S) { 
-  const  BbPromise = require('bluebird'),
-         SError    = require(S.getServerlessPath('Error'));
+class ServerlessCommandLineEventArgs {
+  constructor(serverless, options) {
+    this.serverless = serverless;
+    this.options = options;
 
-  class commandLineEventArgs extends S.classes.Plugin {
-    constructor() {
-      super();
-      this.name = 'commandLineEventArgs';
-      let args = { option: 'event',
-                   shortcut: 'e',
-                   description: 'Event JSON passes function'};
-      S.commands.function.run.options.push(args);
-    }
-
-    registerHooks() {
-      S.addHook(this._hookPre.bind(this), {
-        action: 'functionRun',
-        event:  'pre'
-      });
-      return BbPromise.resolve();
-    }
-
-    _hookPre(evt) {
-      return new BbPromise(function (resolve, reject) {
-        try {
-          if (evt.options.event !== null) {
-            evt.data.event = JSON.parse(evt.options.event);
+    this.commands = {
+      invoke: {
+        options: {
+          event: {
+            usage: 'Event JSON passes function (e.g. --event \'{"foo":"var"}\' or -e \'{"foo":"var"}\')',
+            shortcut: 'e'
           }
-          return resolve(evt);
-        } catch(e) {
-          reject(new SError("Invalid event JSON"));
-        } 
-      });
+        }
+      },
+    };
+
+    this.hooks = {
+      'before:invoke:invoke': this.setEvent.bind(this)
     }
   }
-  return commandLineEventArgs;
-};
+
+  setEvent() {
+    if ( this.options.event !== undefined || this.options.event !== true ) {
+      if ( this.isJson(this.options.event) ) {
+        this.options.data = JSON.parse(this.options.event)
+      } else {
+        this.options.data = this.options.event
+      }
+    }
+    return BbPromise.resolve(this);
+  }
+
+  isJson(arg) {
+    if (typeof(arg) !== "string") {
+      return false;
+    }
+
+    try {
+      var arg = (!JSON) ? eval("(" + arg + ")") : JSON.parse(arg);
+      return true;
+    } catch(e) {
+      return false;
+    }
+  }
+}
+module.exports = ServerlessCommandLineEventArgs;
