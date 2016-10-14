@@ -14,12 +14,6 @@ I think useful for developers, because event.json is a little difficult to manag
 Execute your Lambda function. Add `-e '<JSON>'` or `--event '<JSON>'`.
 
     $ serverless invoke -f YourFunction --event '{"foo":"var"}'
-    
-The following example are displayed `{"foo":"var"}`.
-
-    module.exports.handler = function(event, context, cb) {
-        console.log(event);
-    };
 
 ## Install
 Execute npm install in your Serverless project.
