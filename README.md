@@ -2,7 +2,7 @@
 # Serverless CommandLine Event Args
 ## Overview
 This is a Serverless Framework plugin. Event JSON passes to your Lambda function in commandline when you execute `serverless invoke`.
-Support to Serverless 1.0.
+Support for Serverless 1.0.
 
 I think useful for developers, because event.json is a little difficult to manage.
 
