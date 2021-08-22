@@ -11,7 +11,8 @@ class ServerlessCommandLineEventArgs {
         options: {
           event: {
             usage: 'Event JSON passes function (e.g. --event \'{"foo":"var"}\' or -e \'{"foo":"var"}\')',
-            shortcut: 'e'
+            shortcut: 'e',
+            type: 'string',
           }
         }
       },
